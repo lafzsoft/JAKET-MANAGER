@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Jacket Manager</string>
+    <string name="empty_inventory_title">Your Wardrobe is Waiting</string>
+    <string name="empty_inventory_title_id">Lemari Jaket Masih Kosong</string>
+    <string name="empty_inventory_desc">No jackets are currently logged in your inventory. Add your first jacket to organize styles, track sizes, and manage stock quantities!</string>
+    <string name="empty_inventory_desc_id">Belum ada jaket yang tercatat di inventaris. Tambahkan jaket pertamamu untuk mulai memantau stok, ukuran, dan model secara real-time!</string>
+    <string name="empty_inventory_add_btn">Add First Jacket</string>
+    <string name="empty_inventory_add_btn_id">Tambah Jaket Pertama</string>
+    <string name="empty_inventory_sample_btn">Load Sample Stock</string>
+    <string name="empty_inventory_sample_btn_id">Muat Data Contoh</string>
+    <string name="empty_filter_title">No Matching Jackets</string>
+    <string name="empty_filter_title_id">Tidak Ada Jaket yang Sesuai</string>
+    <string name="empty_filter_desc">No jackets match your current filter criteria. Try selecting another style or clear search filters.</string>
+    <string name="empty_filter_desc_id">Tidak ada jaket yang sesuai dengan kriteria filter saat ini. Coba pilih model lain atau reset filter.</string>
+    <string name="empty_filter_reset_btn">Show All Jackets</string>
+    <string name="empty_filter_reset_btn_id">Tampilkan Semua Jaket</string>
+    <string name="daily_production_title">Daily Production</string>
+    <string name="daily_production_title_id">Produksi Harian</string>
+    <string name="daily_production_log_btn">Log Production</string>
+    <string name="daily_production_log_btn_id">Catat Produksi</string>
+</resources>

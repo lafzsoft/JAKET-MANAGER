@@ -1,0 +1,713 @@
+Application Overview — A product management application for jacket inventory and catalog organization, designed for retail and warehouse teams to track styles, sizes, and stock levels in a neutral, non-personalized interface.
+
+Home Screen —
+Layout & Structure
+* The Home Screen begins immediately with the main content area, with no top app bar or header present. The screen opens directly to the Hero Area.
+* The hero section is followed by a horizontally scrollable carousel of jacket categories, each generating its own dedicated section below.
+* Each carousel item propagates into a separate section with either a grid or vertical list layout.
+* No footer is present on this screen. Content extends naturally to the bottom without any persistent navigation or informational footer elements.
+* No control or container touches the bottom edge of the viewport.
+
+Core UI Components
+[HERO: SPLIT] Hero Area — Manage your jacket inventory with precision and clarity. At the bottom of the hero, include a GRADIENT CTA button with text 'Add New Jacket' (gradient: charcoal #2D3748 to slate #4A5568, text: white #FFFFFF) centered. Asset Tag: jacket-warehouse-hero; Summary Line: Industrial warehouse with stacked jackets on metal racks.
+
+[LAYOUT: CAROUSEL] [CARD_SHAPE: SQUARE] Jacket Styles — Carousel Item 1: Bomber Jacket Card — Title: Bomber Jacket; Body: Classic military-inspired outerwear; Asset Tag: bomber-jacket-card; Summary Line: Military-style bomber jacket with ribbed cuffs.  
+Carousel Item 2: Trench Coat Card — Title: Trench Coat; Body: Water-resistant double-breasted design; Asset Tag: trench-coat-card; Summary Line: Classic long trench coat with belt and epaulettes.  
+Carousel Item 3: Denim Jacket Card — Title: Denim Jacket; Body: Rugged cotton denim with button front; Asset Tag: denim-jacket-card; Summary Line: Blue denim jacket with patch pockets.  
+Carousel Item 4: Puffer Jacket Card — Title: Puffer Jacket; Body: Lightweight insulated with quilted fabric; Asset Tag: puffer-jacket-card; Summary Line: Quilted puffer jacket with hood and zip closure.
+
+[LAYOUT: GRID_2COL] [CARD_SHAPE: SQUARE] Jacket Sizes — Grid Item 1: XS Card — Title: XS; Body: Fits chest 76–81 cm; Asset Tag: jacket-size-xs; Summary Line: Extra small jacket size for slim builds.  
+Grid Item 2: S Card — Title: S; Body: Fits chest 81–86 cm; Asset Tag: jacket-size-s; Summary Line: Small jacket size for average builds.  
+Grid Item 3: M Card — Title: M; Body: Fits chest 86–91 cm; Asset Tag: jacket-size-m; Summary Line: Medium jacket size for standard builds.  
+Grid Item 4: L Card — Title: L; Body: Fits chest 91–96 cm; Asset Tag: jacket-size-l; Summary Line: Large jacket size for broad builds.  
+Grid Item 5: XL Card — Title: XL; Body: Fits chest 96–101 cm; Asset Tag: jacket-size-xl; Summary Line: Extra large jacket size for tall builds.  
+Grid Item 6: XXL Card — Title: XXL; Body: Fits chest 101–106 cm; Asset Tag: jacket-size-xxl; Summary Line: Double extra large jacket size.
+
+[LAYOUT: VERTICAL_LIST] [CARD_SHAPE: LANDSCAPE] Stock Status — List Item 1: In Stock Card — Title: In Stock; Body: Ready for immediate dispatch; Asset Tag: stock-in; Summary Line: Jacket inventory fully available for sale.  
+List Item 2: Low Stock Card — Title: Low Stock; Body: Few units remaining, restock needed; Asset Tag: stock-low; Summary Line: Jacket inventory below minimum threshold.  
+List Item 3: Out of Stock Card — Title: Out of Stock; Body: Currently unavailable, pending restock; Asset Tag: stock-out; Summary Line: Jacket inventory depleted, awaiting replenishment.
+
+[LAYOUT: FEATURE_BANNER] [CARD_SHAPE: BANNER_FULL] Seasonal Collection — Banner Image: seasonal-jacket-banner; Summary Line: Winter collection jackets with thermal lining.  
+[LAYOUT: GRID_3COL] [CARD_SHAPE: CIRCLE] Jacket Materials — Grid Item 1: Cotton Card — Title: Cotton; Asset Tag: material-cotton; Summary Line: Natural breathable cotton fabric.  
+Grid Item 2: Polyester Card — Title: Polyester; Asset Tag: material-polyester; Summary Line: Durable synthetic fiber blend.  
+Grid Item 3: Wool Card — Title: Wool; Asset Tag: material-wool; Summary Line: Warm insulating natural fiber.  
+Grid Item 4: Nylon Card — Title: Nylon; Asset Tag: material-nylon; Summary Line: Lightweight water-resistant fabric.  
+Grid Item 5: Leather Card — Title: Leather; Asset Tag: material-leather; Summary Line: Premium animal hide with smooth finish.  
+Grid Item 6: Fleece Card — Title: Fleece; Asset Tag: material-fleece; Summary Line: Soft thermal synthetic pile fabric.
+
+[LAYOUT: CAROUSEL] [CARD_SHAPE: PORTRAIT] Jacket Colors — Carousel Item 1: Black Card — Title: Black; Body: Classic matte finish; Asset Tag: color-black; Summary Line: Solid black jacket with no sheen.  
+Carousel Item 2: Navy Card — Title: Navy; Body: Deep indigo tone; Asset Tag: color-navy; Summary Line: Rich navy blue jacket.  
+Carousel Item 3: Olive Card — Title: Olive; Body: Earthy green-brown hue; Asset Tag: color-olive; Summary Line: Military-inspired olive green jacket.  
+Carousel Item 4: Beige Card — Title: Beige; Body: Neutral light tan shade; Asset Tag: color-beige; Summary Line: Soft beige jacket for casual wear.
+
+Image Asset Descriptions
+jacket-warehouse-hero
+* Industrial warehouse with stacked jackets on metal racks under fluorescent lighting
+* Summary Line: Industrial warehouse with stacked jackets on metal racks
+
+bomber-jacket-card
+* Black leather bomber jacket with ribbed cuffs and zipper front
+* Summary Line: Military-style bomber jacket with ribbed cuffs
+
+trench-coat-card
+* Beige cotton trench coat with double-breasted buttons and belt
+* Summary Line: Classic long trench coat with belt and epaulettes
+
+denim-jacket-card
+* Medium blue denim jacket with patch pockets and button front
+* Summary Line: Blue denim jacket with patch pockets
+
+puffer-jacket-card
+* Dark gray quilted puffer jacket with hood and zip closure
+* Summary Line: Quilted puffer jacket with hood and zip closure
+
+jacket-size-xs
+* White label with black text "XS" on a gray fabric swatch
+* Summary Line: Extra small jacket size for slim builds
+
+jacket-size-s
+* White label with black text "S" on a gray fabric swatch
+* Summary Line: Small jacket size for average builds
+
+jacket-size-m
+* White label with black text "M" on a gray fabric swatch
+* Summary Line: Medium jacket size for standard builds
+
+jacket-size-l
+* White label with black text "L" on a gray fabric swatch
+* Summary Line: Large jacket size for broad builds
+
+jacket-size-xl
+* White label with black text "XL" on a gray fabric swatch
+* Summary Line: Extra large jacket size for tall builds
+
+jacket-size-xxl
+* White label with black text "XXL" on a gray fabric swatch
+* Summary Line: Double extra large jacket size
+
+stock-in
+* Green checkmark icon on white background with jacket silhouette
+* Summary Line: Jacket inventory fully available for sale
+
+stock-low
+* Yellow exclamation mark icon on white background with jacket silhouette
+* Summary Line: Jacket inventory below minimum threshold
+
+stock-out
+* Red X icon on white background with jacket silhouette
+* Summary Line: Jacket inventory depleted, awaiting replenishment
+
+seasonal-jacket-banner
+* Winter-themed display of puffer and wool jackets on wooden hangers
+* Summary Line: Winter collection jackets with thermal lining
+
+material-cotton
+* Close-up of woven cotton fabric with visible threads
+* Summary Line: Natural breathable cotton fabric
+
+material-polyester
+* Close-up of smooth synthetic polyester fabric with slight sheen
+* Summary Line: Durable synthetic fiber blend
+
+material-wool
+* Close-up of thick wool knit with visible fiber texture
+* Summary Line: Warm insulating natural fiber
+
+material-nylon
+* Close-up of tightly woven nylon fabric with water-repellent finish
+* Summary Line: Lightweight water-resistant fabric
+
+material-leather
+* Close-up of smooth brown leather with natural grain pattern
+* Summary Line: Premium animal hide with smooth finish
+
+material-fleece
+* Close-up of soft synthetic fleece with fluffy pile surface
+* Summary Line: Soft thermal synthetic pile fabric
+
+color-black
+* Solid black jacket front with minimal branding
+* Summary Line: Solid black jacket with no sheen
+
+color-navy
+* Deep navy blue jacket with clean lines and no patterns
+* Summary Line: Rich navy blue jacket
+
+color-olive
+* Olive green jacket with matte finish and structured silhouette
+* Summary Line: Military-inspired olive green jacket
+
+color-beige
+* Light beige jacket with soft texture and neutral tone
+* Summary Line: Soft beige jacket for casual wear
+
+External Asset URLs (auto-generated):
+- image 1: https://mediadirhub.com/vibe/industrial-warehouse-with-stacked-jackets-on-metal-racks-under-fluorescent-lighting.png
+- image 2: https://mediadirhub.com/vibe/black-leather-bomber-jacket-with-ribbed-cuffs-and-zipper-front.png
+- image 3: https://mediadirhub.com/vibe/beige-cotton-trench-coat-with-double-breasted-buttons-and-belt.png
+- image 4: https://mediadirhub.com/vibe/medium-blue-denim-jacket-with-patch-pockets-and-button-front.png
+- image 5: https://mediadirhub.com/vibe/dark-gray-quilted-puffer-jacket-with-hood-and-zip-closure.png
+- image 6: https://mediadirhub.com/vibe/white-label-with-black-text-xs-on-a-gray-fabric-swatch.png
+- image 7: https://mediadirhub.com/vibe/white-label-with-black-text-s-on-a-gray-fabric-swatch.png
+- image 8: https://mediadirhub.com/vibe/white-label-with-black-text-m-on-a-gray-fabric-swatch.png
+- image 9: https://mediadirhub.com/vibe/white-label-with-black-text-l-on-a-gray-fabric-swatch.png
+- image 10: https://mediadirhub.com/vibe/white-label-with-black-text-xl-on-a-gray-fabric-swatch.png
+- image 11: https://mediadirhub.com/vibe/white-label-with-black-text-xxl-on-a-gray-fabric-swatch.png
+- image 12: https://mediadirhub.com/vibe/green-checkmark-icon-on-white-background-with-jacket-silhouette.png
+- image 13: https://mediadirhub.com/vibe/yellow-exclamation-mark-icon-on-white-background-with-jacket-silhouette.png
+- image 14: https://mediadirhub.com/vibe/red-x-icon-on-white-background-with-jacket-silhouette.png
+- image 15: https://mediadirhub.com/vibe/winter-themed-display-of-puffer-and-wool-jackets-on-wooden-hangers.png
+- image 16: https://mediadirhub.com/vibe/close-up-of-woven-cotton-fabric-with-visible-threads.png
+- image 17: https://mediadirhub.com/vibe/close-up-of-smooth-synthetic-polyester-fabric-with-slight-sheen.png
+- image 18: https://mediadirhub.com/vibe/close-up-of-thick-wool-knit-with-visible-fiber-texture.png
+- image 19: https://mediadirhub.com/vibe/close-up-of-tightly-woven-nylon-fabric-with-water-repellent-finish.png
+- image 20: https://mediadirhub.com/vibe/close-up-of-smooth-brown-leather-with-natural-grain-pattern.png
+- image 21: https://mediadirhub.com/vibe/close-up-of-soft-synthetic-fleece-with-fluffy-pile-surface.png
+- image 22: https://mediadirhub.com/vibe/solid-black-jacket-front-with-minimal-branding.png
+- image 23: https://mediadirhub.com/vibe/deep-navy-blue-jacket-with-clean-lines-and-no-patterns.png
+- image 24: https://mediadirhub.com/vibe/olive-green-jacket-with-matte-finish-and-structured-silhouette.png
+- image 25: https://mediadirhub.com/vibe/light-beige-jacket-with-soft-texture-and-neutral-tone.png  
+{
+  "templates": {
+    "_template_carousel_card_square": {
+      "type": "container",
+      "orientation": "vertical",
+      "width": {"type": "fixed", "value": 133},
+      "height": {"type": "wrap_content"},
+      "background": [{"type": "solid", "color": "#FFFFFF"}],
+      "border": {"corner_radius": 12},
+      "paddings": {"left": 0, "right": 0, "top": 0, "bottom": 12}
+    },
+    "_template_grid_card_square": {
+      "type": "container",
+      "orientation": "vertical",
+      "width": {"type": "match_parent"},
+      "height": {"type": "wrap_content"},
+      "background": [{"type": "solid", "color": "#FFFFFF"}],
+      "border": {"corner_radius": 12},
+      "margins": {"left": 4, "right": 4, "top": 8, "bottom": 8},
+      "paddings": {"left": 0, "right": 0, "top": 0, "bottom": 12}
+    },
+    "_template_vertical_list_card_landscape": {
+      "type": "container",
+      "orientation": "horizontal",
+      "width": {"type": "match_parent"},
+      "height": {"type": "wrap_content"},
+      "background": [{"type": "solid", "color": "#FFFFFF"}],
+      "border": {"corner_radius": 12},
+      "margins": {"left": 12, "right": 12, "top": 8, "bottom": 8},
+      "paddings": {"left": 12, "top": 12, "right": 12, "bottom": 12}
+    },
+    "_template_banner_full": {
+      "type": "container",
+      "orientation": "vertical",
+      "width": {"type": "match_parent"},
+      "height": {"type": "wrap_content"},
+      "margins": {"top": 16, "left": 12, "right": 12, "bottom": 16},
+      "background": [{"type": "solid", "color": "#FFFFFF"}],
+      "border": {"corner_radius": 16},
+      "paddings": {"left": 0, "top": 0, "right": 0, "bottom": 16}
+    },
+    "_template_circle_card": {
+      "type": "container",
+      "orientation": "vertical",
+      "width": {"type": "match_parent"},
+      "height": {"type": "wrap_content"},
+      "background": [{"type": "solid", "color": "#FFFFFF"}],
+      "border": {"corner_radius": 12},
+      "content_alignment_horizontal": "center",
+      "margins": {"left": 4, "right": 4, "top": 8, "bottom": 8},
+      "paddings": {"left": 0, "right": 0, "top": 0, "bottom": 12}
+    },
+    "_template_card_image_square": {
+      "type": "image",
+      "width": {"type": "match_parent"},
+      "height": {"type": "fixed", "value": 112},
+      "scale": "fill"
+    },
+    "_template_card_image_landscape": {
+      "type": "image",
+      "width": {"type": "match_parent"},
+      "height": {"type": "fixed", "value": 98},
+      "scale": "fill"
+    },
+    "_template_card_image_circle": {
+      "type": "image",
+      "width": {"type": "fixed", "value": 80},
+      "height": {"type": "fixed", "value": 80},
+      "scale": "fill",
+      "border": {"corner_radius": 40},
+      "margins": {"top": 12}
+    },
+    "_template_card_title": {
+      "type": "text",
+      "font_size": 16,
+      "font_weight": "medium",
+      "text_color": "#1A1A1A",
+      "max_lines": 1,
+      "margins": {"top": 12, "left": 12, "right": 12}
+    },
+    "_template_card_title_circle": {
+      "type": "text",
+      "font_size": 16,
+      "font_weight": "medium",
+      "text_color": "#1A1A1A",
+      "max_lines": 1,
+      "text_alignment_horizontal": "center",
+      "margins": {"top": 12, "left": 8, "right": 8}
+    },
+    "_template_card_description": {
+      "type": "text",
+      "font_size": 13,
+      "text_color": "#666666",
+      "max_lines": 2,
+      "margins": {"top": 6, "left": 12, "right": 12, "bottom": 12}
+    },
+    "_template_card_description_circle": {
+      "type": "text",
+      "font_size": 13,
+      "text_color": "#666666",
+      "max_lines": 2,
+      "text_alignment_horizontal": "center",
+      "margins": {"top": 6, "left": 8, "right": 8, "bottom": 12}
+    },
+    "_template_section_header": {
+      "type": "text",
+      "font_size": 20,
+      "font_weight": "bold",
+      "text_color": "#1A1A1A",
+      "margins": {"left": 16, "right": 16, "top": 24, "bottom": 12}
+    },
+    "_template_banner_image": {
+      "type": "image",
+      "width": {"type": "match_parent"},
+      "height": {"type": "fixed", "value": 200},
+      "scale": "fill"
+    },
+    "_template_banner_title": {
+      "type": "text",
+      "font_size": 20,
+      "font_weight": "bold",
+      "text_color": "#1A1A1A",
+      "margins": {"top": 16, "left": 10, "right": 10}
+    },
+    "_template_banner_subtitle": {
+      "type": "text",
+      "font_size": 14,
+      "text_color": "#666666",
+      "max_lines": 3,
+      "margins": {"top": 8, "left": 10, "right": 10}
+    }
+  },
+  "card": {
+    "log_id": "product_management",
+    "states": [
+      {
+        "state_id": 0,
+        "div": {
+          "type": "container",
+          "orientation": "vertical",
+          "background": [{"type": "solid", "color": "#F5F5F5"}],
+          "width": {"type": "match_parent"},
+          "height": {"type": "wrap_content"},
+          "items": [
+            {
+              "type": "container",
+              "orientation": "horizontal",
+              "width": {"type": "match_parent"},
+              "height": {"type": "fixed", "value": 210},
+              "items": [
+                {
+                  "type": "image",
+                  "image_url": "https://mediadirhub.com/vibe/industrial-warehouse-with-stacked-jackets-on-metal-racks-under-fluorescent-lighting.png",
+                  "width": {"type": "match_parent", "weight": 1},
+                  "height": {"type": "match_parent"},
+                  "scale": "fill"
+                },
+                {
+                  "type": "container",
+                  "orientation": "vertical",
+                  "width": {"type": "match_parent", "weight": 1},
+                  "height": {"type": "match_parent"},
+                  "paddings": {"left": 10, "top": 32, "right": 10, "bottom": 24},
+                  "content_alignment_vertical": "center",
+                  "content_alignment_horizontal": "center",
+                  "items": [
+                    {
+                      "type": "text",
+                      "text": "Kelola inventaris jaket Anda dengan presisi dan kejelasan.",
+                      "font_size": 16,
+                      "line_height": 18,
+                      "text_color": "#1A1A1A",
+                      "text_alignment_horizontal": "center"
+                    },
+                    {
+                      "type": "text",
+                      "role": "button",
+                      "text": "Tambah Jaket Baru",
+                      "font_size": 16,
+                      "font_weight": "medium",
+                      "text_alignment_horizontal": "center",
+                      "text_alignment_vertical": "center",
+                      "text_color": "#FFFFFF",
+                      "background": [{"type": "gradient", "colors": ["#2D3748", "#4A5568"], "angle": 90}],
+                      "border": {"corner_radius": 25},
+                      "paddings": {"top": 14, "bottom": 14, "left": 24, "right": 24},
+                      "width": {"type": "wrap_content"},
+                      "margins": {"top": 16}
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "gallery",
+              "orientation": "horizontal",
+              "item_spacing": 10,
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 16, "left": 8, "right": 8, "bottom": 24},
+              "paddings": {"left": 8, "right": 8},
+              "items": [
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "style_bomber", "url": "action://style_bomber"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/black-leather-bomber-jacket-with-ribbed-cuffs-and-zipper-front.png"},
+                    {"type": "_template_card_title", "text": "Bomber Jacket"},
+                    {"type": "_template_card_description", "text": "Pakaian luar klasik bernuansa militer"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "style_trench", "url": "action://style_trench"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/beige-cotton-trench-coat-with-double-breasted-buttons-and-belt.png"},
+                    {"type": "_template_card_title", "text": "Trench Coat"},
+                    {"type": "_template_card_description", "text": "Desain ganda dengan tahan air"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "style_denim", "url": "action://style_denim"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/medium-blue-denim-jacket-with-patch-pockets-and-button-front.png"},
+                    {"type": "_template_card_title", "text": "Denim Jacket"},
+                    {"type": "_template_card_description", "text": "Denim katun kasar dengan kancing depan"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "style_puffer", "url": "action://style_puffer"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/dark-gray-quilted-puffer-jacket-with-hood-and-zip-closure.png"},
+                    {"type": "_template_card_title", "text": "Puffer Jacket"},
+                    {"type": "_template_card_description", "text": "Insulasi ringan dengan kain berlapis"}
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "_template_section_header",
+              "text": "Ukuran Jaket"
+            },
+            {
+              "type": "gallery",
+              "orientation": "vertical",
+              "column_count": 2,
+              "item_spacing": 8,
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 0, "left": 8, "right": 8, "bottom": 24},
+              "paddings": {"left": 8, "right": 8},
+              "items": [
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_xs", "url": "action://size_xs"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-xs-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "XS"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 76–81 cm"}
+                  ]
+                },
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_s", "url": "action://size_s"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-s-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "S"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 81–86 cm"}
+                  ]
+                },
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_m", "url": "action://size_m"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-m-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "M"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 86–91 cm"}
+                  ]
+                },
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_l", "url": "action://size_l"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-l-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "L"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 91–96 cm"}
+                  ]
+                },
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_xl", "url": "action://size_xl"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-xl-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "XL"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 96–101 cm"}
+                  ]
+                },
+                {
+                  "type": "_template_grid_card_square",
+                  "action": {"log_id": "size_xxl", "url": "action://size_xxl"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/white-label-with-black-text-xxl-on-a-gray-fabric-swatch.png"},
+                    {"type": "_template_card_title", "text": "XXL"},
+                    {"type": "_template_card_description", "text": "Cocok untuk dada 101–106 cm"}
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "_template_section_header",
+              "text": "Status Stok"
+            },
+            {
+              "type": "container",
+              "orientation": "vertical",
+              "width": {"type": "match_parent"},
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 0, "left": 0, "right": 0, "bottom": 24},
+              "items": [
+                {
+                  "type": "_template_vertical_list_card_landscape",
+                  "action": {"log_id": "status_in", "url": "action://status_in"},
+                  "items": [
+                    {
+                      "type": "image",
+                      "image_url": "https://mediadirhub.com/vibe/green-checkmark-icon-on-white-background-with-jacket-silhouette.png",
+                      "width": {"type": "fixed", "value": 100},
+                      "height": {"type": "fixed", "value": 80},
+                      "scale": "fill",
+                      "border": {"corner_radius": 8}
+                    },
+                    {
+                      "type": "container",
+                      "orientation": "vertical",
+                      "width": {"type": "match_parent", "weight": 1},
+                      "height": {"type": "wrap_content"},
+                      "margins": {"left": 12},
+                      "items": [
+                        {"type": "text", "text": "Stok Tersedia", "font_size": 16, "font_weight": "medium", "text_color": "#1A1A1A", "max_lines": 1},
+                        {"type": "text", "text": "Siap untuk pengiriman segera", "font_size": 13, "text_color": "#666666", "max_lines": 2, "margins": {"top": 4}}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "_template_vertical_list_card_landscape",
+                  "action": {"log_id": "status_low", "url": "action://status_low"},
+                  "items": [
+                    {
+                      "type": "image",
+                      "image_url": "https://mediadirhub.com/vibe/yellow-exclamation-mark-icon-on-white-background-with-jacket-silhouette.png",
+                      "width": {"type": "fixed", "value": 100},
+                      "height": {"type": "fixed", "value": 80},
+                      "scale": "fill",
+                      "border": {"corner_radius": 8}
+                    },
+                    {
+                      "type": "container",
+                      "orientation": "vertical",
+                      "width": {"type": "match_parent", "weight": 1},
+                      "height": {"type": "wrap_content"},
+                      "margins": {"left": 12},
+                      "items": [
+                        {"type": "text", "text": "Stok Sedikit", "font_size": 16, "font_weight": "medium", "text_color": "#1A1A1A", "max_lines": 1},
+                        {"type": "text", "text": "Sisa unit sedikit, perlu restock", "font_size": 13, "text_color": "#666666", "max_lines": 2, "margins": {"top": 4}}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "_template_vertical_list_card_landscape",
+                  "action": {"log_id": "status_out", "url": "action://status_out"},
+                  "items": [
+                    {
+                      "type": "image",
+                      "image_url": "https://mediadirhub.com/vibe/red-x-icon-on-white-background-with-jacket-silhouette.png",
+                      "width": {"type": "fixed", "value": 100},
+                      "height": {"type": "fixed", "value": 80},
+                      "scale": "fill",
+                      "border": {"corner_radius": 8}
+                    },
+                    {
+                      "type": "container",
+                      "orientation": "vertical",
+                      "width": {"type": "match_parent", "weight": 1},
+                      "height": {"type": "wrap_content"},
+                      "margins": {"left": 12},
+                      "items": [
+                        {"type": "text", "text": "Habis Stok", "font_size": 16, "font_weight": "medium", "text_color": "#1A1A1A", "max_lines": 1},
+                        {"type": "text", "text": "Tidak tersedia saat ini, menunggu restock", "font_size": 13, "text_color": "#666666", "max_lines": 2, "margins": {"top": 4}}
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "orientation": "vertical",
+              "width": {"type": "match_parent"},
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 16, "left": 12, "right": 12, "bottom": 16},
+              "background": [{"type": "solid", "color": "#FFFFFF"}],
+              "border": {"corner_radius": 16},
+              "paddings": {"left": 0, "top": 0, "right": 0, "bottom": 16},
+              "action": {"log_id": "seasonal_collection", "url": "action://seasonal_collection"},
+              "items": [
+                {
+                  "type": "_template_banner_image",
+                  "image_url": "https://mediadirhub.com/vibe/winter-themed-display-of-puffer-and-wool-jackets-on-wooden-hangers.png"
+                },
+                {
+                  "type": "_template_banner_title",
+                  "text": "Koleksi Musiman"
+                },
+                {
+                  "type": "_template_banner_subtitle",
+                  "text": "Jaket musim dingin dengan lapisan termal"
+                }
+              ]
+            },
+            {
+              "type": "_template_section_header",
+              "text": "Bahan Jaket"
+            },
+            {
+              "type": "gallery",
+              "orientation": "vertical",
+              "column_count": 3,
+              "item_spacing": 4,
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 0, "left": 8, "right": 8, "bottom": 24},
+              "paddings": {"left": 8, "right": 8},
+              "items": [
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_cotton", "url": "action://material_cotton"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-woven-cotton-fabric-with-visible-threads.png"},
+                    {"type": "_template_card_title_circle", "text": "Katun"},
+                    {"type": "_template_card_description_circle", "text": "Kain katun alami yang bernapas"}
+                  ]
+                },
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_polyester", "url": "action://material_polyester"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-smooth-synthetic-polyester-fabric-with-slight-sheen.png"},
+                    {"type": "_template_card_title_circle", "text": "Polyster"},
+                    {"type": "_template_card_description_circle", "text": "Campuran serat sintetis yang tahan lama"}
+                  ]
+                },
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_wool", "url": "action://material_wool"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-thick-wool-knit-with-visible-fiber-texture.png"},
+                    {"type": "_template_card_title_circle", "text": "Wol"},
+                    {"type": "_template_card_description_circle", "text": "Serat alami yang hangat dan menghangatkan"}
+                  ]
+                },
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_nylon", "url": "action://material_nylon"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-tightly-woven-nylon-fabric-with-water-repellent-finish.png"},
+                    {"type": "_template_card_title_circle", "text": "Nilon"},
+                    {"type": "_template_card_description_circle", "text": "Kain ringan yang tahan air"}
+                  ]
+                },
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_leather", "url": "action://material_leather"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-smooth-brown-leather-with-natural-grain-pattern.png"},
+                    {"type": "_template_card_title_circle", "text": "Kulit"},
+                    {"type": "_template_card_description_circle", "text": "Tampilan premium dari kulit hewan"}
+                  ]
+                },
+                {
+                  "type": "_template_circle_card",
+                  "action": {"log_id": "material_fleece", "url": "action://material_fleece"},
+                  "items": [
+                    {"type": "_template_card_image_circle", "image_url": "https://mediadirhub.com/vibe/close-up-of-soft-synthetic-fleece-with-fluffy-pile-surface.png"},
+                    {"type": "_template_card_title_circle", "text": "Fleece"},
+                    {"type": "_template_card_description_circle", "text": "Kain sintetis lembut dengan permukaan berbulu"}
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "_template_section_header",
+              "text": "Warna Jaket"
+            },
+            {
+              "type": "gallery",
+              "orientation": "horizontal",
+              "item_spacing": 10,
+              "height": {"type": "wrap_content"},
+              "margins": {"top": 0, "left": 8, "right": 8, "bottom": 24},
+              "paddings": {"left": 8, "right": 8},
+              "items": [
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "color_black", "url": "action://color_black"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/solid-black-jacket-front-with-minimal-branding.png"},
+                    {"type": "_template_card_title", "text": "Hitam"},
+                    {"type": "_template_card_description", "text": "Finishing matte klasik"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "color_navy", "url": "action://color_navy"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/deep-navy-blue-jacket-with-clean-lines-and-no-patterns.png"},
+                    {"type": "_template_card_title", "text": "Navy"},
+                    {"type": "_template_card_description", "text": "Nada indigo yang dalam"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "color_olive", "url": "action://color_olive"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/olive-green-jacket-with-matte-finish-and-structured-silhouette.png"},
+                    {"type": "_template_card_title", "text": "Olive"},
+                    {"type": "_template_card_description", "text": "Warna hijau-coklat kebumian"}
+                  ]
+                },
+                {
+                  "type": "_template_carousel_card_square",
+                  "action": {"log_id": "color_beige", "url": "action://color_beige"},
+                  "items": [
+                    {"type": "_template_card_image_square", "image_url": "https://mediadirhub.com/vibe/light-beige-jacket-with-soft-texture-and-neutral-tone.png"},
+                    {"type": "_template_card_title", "text": "Krem"},
+                    {"type": "_template_card_description", "text": "Nuansa terang netral"}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }}
+}

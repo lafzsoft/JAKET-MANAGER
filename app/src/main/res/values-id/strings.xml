@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Jacket Manager</string>
+    <string name="empty_inventory_title">Lemari Jaket Masih Kosong</string>
+    <string name="empty_inventory_title_id">Lemari Jaket Masih Kosong</string>
+    <string name="empty_inventory_desc">Belum ada jaket yang tercatat di inventaris gudang. Tambahkan jaket pertama Anda untuk mulai memantau stok, ukuran, dan model secara real-time!</string>
+    <string name="empty_inventory_desc_id">Belum ada jaket yang tercatat di inventaris gudang. Tambahkan jaket pertama Anda untuk mulai memantau stok, ukuran, dan model secara real-time!</string>
+    <string name="empty_inventory_add_btn">Tambah Jaket Pertama</string>
+    <string name="empty_inventory_add_btn_id">Tambah Jaket Pertama</string>
+    <string name="empty_inventory_sample_btn">Muat Data Contoh</string>
+    <string name="empty_inventory_sample_btn_id">Muat Data Contoh</string>
+    <string name="empty_filter_title">Tidak Ada Jaket yang Sesuai</string>
+    <string name="empty_filter_title_id">Tidak Ada Jaket yang Sesuai</string>
+    <string name="empty_filter_desc">Tidak ada jaket yang sesuai dengan kriteria filter saat ini. Coba pilih model lain atau reset filter.</string>
+    <string name="empty_filter_desc_id">Tidak ada jaket yang sesuai dengan kriteria filter saat ini. Coba pilih model lain atau reset filter.</string>
+    <string name="empty_filter_reset_btn">Tampilkan Semua Jaket</string>
+    <string name="empty_filter_reset_btn_id">Tampilkan Semua Jaket</string>
+    <string name="daily_production_title">Produksi Harian</string>
+    <string name="daily_production_title_id">Produksi Harian</string>
+    <string name="daily_production_log_btn">Catat Produksi</string>
+    <string name="daily_production_log_btn_id">Catat Produksi</string>
+</resources>

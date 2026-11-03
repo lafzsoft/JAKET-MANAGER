@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Inventaris Gudang Jaket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- React & Recharts for interactive Bar Chart Dashboard -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.min.js"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+    .badge-in { background-color: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .badge-low { background-color: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+    .badge-out { background-color: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased pb-24">
+
+  <!-- TOP NAVBAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow">
+          <i class="fa-solid fa-vest-patches text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900 leading-tight" id="txt-app-title">Gudang Inventaris Jaket</h1>
+          <p class="text-xs text-slate-500 font-medium" id="txt-app-subtitle">Sistem Manajemen & Kontrol Stok Terpadu</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold hover:bg-slate-50 transition flex items-center space-x-1">
+          <i class="fa-solid fa-globe text-slate-500"></i>
+          <span id="btn-lang-text">ID / EN</span>
+        </button>
+        <button onclick="exportCsv()" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold hover:bg-emerald-100 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-file-csv"></i>
+          <span id="btn-export-text">Ekspor CSV</span>
+        </button>
+        <button onclick="openScannerModal()" class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-qrcode"></i>
+          <span id="btn-scan-text">Scan Label QR</span>
+        </button>
+        <button onclick="openAddModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition flex items-center space-x-1.5 shadow-sm">
+          <i class="fa-solid fa-plus"></i>
+          <span id="btn-add-text">Tambah Jaket</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- HERO METRICS SUMMARY CARD -->
+    <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-5 text-white shadow-md">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700/60 pb-4">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-chart-pie"></i>
+          </span>
+          <div>
+            <h2 class="text-sm font-bold text-slate-200" id="lbl-summary-title">Ringkasan Gudang & Inventaris Jaket</h2>
+            <p class="text-xs text-slate-400">Sinkronisasi data langsung dengan Google Sheets</p>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+          Live Database Active
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/50">
+          <p class="text-xs text-slate-400 font-medium" id="lbl-total-stock">Total Stok Jaket</p>
+          <p class="text-2xl font-extrabold text-white mt-1" id="stat-total-stock">0</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Unit jaket tersedia</p>
+        </div>
+
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/50">
+          <p class="text-xs text-slate-400 font-medium" id="lbl-unique-variants">Varian Unik Terdaftar</p>
+          <p class="text-2xl font-extrabold text-blue-400 mt-1" id="stat-unique-variants">0</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Kode SKU aktif</p>
+        </div>
+
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/50">
+          <p class="text-xs text-slate-400 font-medium">Stok Aman (Tersedia)</p>
+          <p class="text-2xl font-extrabold text-emerald-400 mt-1" id="stat-in-stock">0</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Varian di atas batas min</p>
+        </div>
+
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/50">
+          <p class="text-xs text-slate-400 font-medium">Perhatian (Menipis/Habis)</p>
+          <p class="text-2xl font-extrabold text-rose-400 mt-1" id="stat-low-stock">0</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Perlu pengadaan restock</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECHARTS DASHBOARD SCREEN SECTION -->
+    <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm" id="section-recharts-dashboard">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold shadow-sm">
+            <i class="fa-solid fa-chart-column"></i>
+          </span>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900" id="recharts-title">Dashboard Distribusi Stok Jaket (Recharts)</h3>
+            <p class="text-xs text-slate-500" id="recharts-subtitle">Visualisasi diagram batang stok per model gaya, ukuran, dan kategori</p>
+          </div>
+        </div>
+        <div class="inline-flex p-1 bg-slate-100 rounded-xl text-xs font-semibold" id="recharts-mode-tabs">
+          <button onclick="setRechartsMode('STYLE')" id="tab-recharts-style" class="px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-900 font-bold transition">Model Gaya</button>
+          <button onclick="setRechartsMode('SIZE')" id="tab-recharts-size" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">Ukuran</button>
+          <button onclick="setRechartsMode('CATEGORY')" id="tab-recharts-category" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">Kategori</button>
+        </div>
+      </div>
+
+      <!-- Mount point for React + Recharts -->
+      <div id="recharts-root" class="w-full mt-4" style="min-height: 260px;">
+        <div class="flex items-center justify-center h-48 text-slate-400 text-xs">
+          <i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat visualisasi Recharts...
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BAR & FILTER SECTION -->
+    <section class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-4">
+      
+      <!-- MAIN SEARCH BAR -->
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+        <input type="text" id="input-search" oninput="handleSearch()"
+          placeholder="Cari nama jaket atau model gaya (contoh: Bomber, Parka, Denim, Trench, Puffer)..."
+          class="w-full pl-10 pr-16 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
+        <button type="button" onclick="openScannerModal()" title="Pindai Label QR / Barcode" class="absolute right-9 top-2.5 text-blue-600 hover:text-blue-800 text-sm p-1">
+          <i class="fa-solid fa-qrcode"></i>
+        </button>
+        <button id="btn-clear-search" onclick="clearSearch()" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-sm p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- QUICK STYLE SHORTCUT CHIPS -->
+      <div class="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
+        <span class="text-slate-500 font-semibold whitespace-nowrap">Pencarian Gaya:</span>
+        <button onclick="setQuickSearch('Bomber')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">Bomber</button>
+        <button onclick="setQuickSearch('Parka')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">Parka</button>
+        <button onclick="setQuickSearch('Denim')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">Denim</button>
+        <button onclick="setQuickSearch('Trench')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">Trench</button>
+        <button onclick="setQuickSearch('Puffer')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">Puffer</button>
+      </div>
+
+      <!-- FILTER CONTROLS BAR -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs">
+        <!-- Stock Status Filters -->
+        <div class="flex items-center space-x-1.5 overflow-x-auto" id="filter-status-group">
+          <button onclick="setStatusFilter('ALL')" id="btn-status-all" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white font-semibold shadow-sm">Semua Status</button>
+          <button onclick="setStatusFilter('IN_STOCK')" id="btn-status-in" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Tersedia</button>
+          <button onclick="setStatusFilter('LOW_STOCK')" id="btn-status-low" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Menipis</button>
+          <button onclick="setStatusFilter('OUT_OF_STOCK')" id="btn-status-out" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Habis</button>
+        </div>
+
+        <!-- View Mode & Sort Dropdowns -->
+        <div class="flex items-center space-x-2">
+          <!-- View Mode Toggle -->
+          <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+            <button onclick="setViewMode('grid')" id="btn-view-grid" class="px-2.5 py-1 rounded-md text-xs font-bold bg-white text-slate-900 shadow-sm">
+              <i class="fa-solid fa-table-cells-large mr-1"></i> Grid
+            </button>
+            <button onclick="setViewMode('list')" id="btn-view-list" class="px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900">
+              <i class="fa-solid fa-list mr-1"></i> Tabel
+            </button>
+          </div>
+
+          <!-- Sort Select -->
+          <select id="select-sort" onchange="handleSort()" class="py-1.5 px-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:outline-none">
+            <option value="STYLE_ASC">Model Gaya (A-Z)</option>
+            <option value="NAME_ASC">Nama Jaket (A-Z)</option>
+            <option value="QTY_DESC">Stok Terbanyak</option>
+            <option value="QTY_ASC">Stok Tersedikit</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVE SEARCH INDICATOR -->
+    <div id="search-indicator" class="hidden bg-blue-50 border border-blue-200 rounded-xl px-4 py-2.5 flex items-center justify-between text-xs text-blue-900">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-filter text-blue-600"></i>
+        <span id="search-indicator-text">Menampilkan hasil pencarian</span>
+      </div>
+      <button onclick="clearSearch()" class="font-bold text-blue-700 hover:underline">Reset</button>
+    </div>
+
+    <!-- CATALOG GRID / LIST CONTAINER -->
+    <section>
+      <!-- GRID VIEW -->
+      <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- LIST VIEW -->
+      <div id="catalog-list" class="hidden bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase tracking-wider">
+            <tr>
+              <th class="p-3.5">Produk</th>
+              <th class="p-3.5">SKU</th>
+              <th class="p-3.5">Kategori & Gaya</th>
+              <th class="p-3.5">Ukuran</th>
+              <th class="p-3.5">Stok Saat Ini</th>
+              <th class="p-3.5">Status</th>
+              <th class="p-3.5 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="catalog-list-body" class="divide-y divide-slate-100">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="empty-state" class="hidden bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-sm max-w-lg mx-auto">
+        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center text-2xl mb-4">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+        <h3 class="text-base font-bold text-slate-800">Tidak ada jaket ditemukan</h3>
+        <p class="text-xs text-slate-500 mt-1" id="empty-state-desc">Silakan sesuaikan kata kunci pencarian atau reset filter.</p>
+        <button onclick="clearAllFilters()" class="mt-4 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition">
+          Reset Semua Filter
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DETAIL PRODUK EXPANDED -->
+  <div id="modal-detail" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in border border-slate-100">
+      
+      <!-- MODAL HEADER -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div>
+          <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded" id="modal-sku">SKU</span>
+          <h3 class="text-lg font-extrabold text-slate-900 mt-1" id="modal-title">Nama Jaket</h3>
+        </div>
+        <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <!-- HERO IMAGE & PRICE -->
+        <div class="relative h-60 rounded-2xl bg-slate-100 overflow-hidden border border-slate-200">
+          <img id="modal-img" src="" alt="Jacket" class="w-full h-full object-cover">
+          <div class="absolute top-3 left-3" id="modal-status-badge"></div>
+          <div class="absolute top-3 right-3 bg-slate-900/80 text-white font-extrabold px-3 py-1 rounded-lg text-sm" id="modal-price">$0.00</div>
+          <button onclick="openImagePickerForCurrent()" class="absolute bottom-3 right-3 bg-slate-900/80 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-camera"></i>
+            <span>Ubah Foto SKU</span>
+          </button>
+        </div>
+
+        <!-- DESKRIPSI PRODUK -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2">
+          <div class="flex items-center space-x-2 text-slate-900 font-bold text-xs">
+            <i class="fa-solid fa-circle-info text-blue-600"></i>
+            <span>Deskripsi & Karakteristik Produk</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed" id="modal-desc">Deskripsi detail...</p>
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200/60 text-xs">
+            <div><span class="text-slate-400 block text-[10px]">Bahan:</span><strong id="modal-material">Cotton</strong></div>
+            <div><span class="text-slate-400 block text-[10px]">Warna:</span><strong id="modal-color">Black</strong></div>
+            <div><span class="text-slate-400 block text-[10px]">Lokasi Rak:</span><strong id="modal-rack">Rack A-01</strong></div>
+          </div>
+        </div>
+
+        <!-- VARIAN WARNA -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-900 flex items-center space-x-1.5">
+              <i class="fa-solid fa-palette text-purple-600"></i>
+              <span>Varian Warna Tersedia</span>
+            </span>
+            <span class="text-slate-500" id="modal-active-color">Warna Aktif: Black</span>
+          </div>
+          <div class="flex items-center space-x-3 overflow-x-auto py-1" id="modal-color-swatches"></div>
+        </div>
+
+        <!-- RINCIAN STOK & HEALTH GAUGE -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-4">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+            <span class="flex items-center space-x-1.5">
+              <i class="fa-solid fa-boxes-stacked text-emerald-600"></i>
+              <span>Rincian Stok & Distribusi Ukuran</span>
+            </span>
+            <span class="text-xs px-2 py-0.5 rounded font-bold" id="modal-stock-status-pill">Stok Aman</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-400 block">Stok Gudang</span>
+              <span class="text-lg font-extrabold text-slate-900" id="modal-qty">0</span>
+              <span class="text-[10px] text-slate-400 block">Unit Tersedia</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-400 block">Batas Minimum</span>
+              <span class="text-lg font-extrabold text-slate-900" id="modal-threshold">5</span>
+              <span class="text-[10px] text-slate-400 block">Ambang Peringatan</span>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+              <span class="text-[10px] text-slate-400 block">Lokasi Rak</span>
+              <span class="text-sm font-extrabold text-slate-900 block mt-1" id="modal-rack-box">Rack A-01</span>
+              <span class="text-[10px] text-slate-400 block">Gudang Utama</span>
+            </div>
+          </div>
+
+          <!-- SIZE MATRIX XS - 3XL -->
+          <div>
+            <span class="text-[11px] font-bold text-slate-700 block mb-1.5">Distribusi Ukuran Lengkap (XS - 3XL):</span>
+            <div class="grid grid-cols-7 gap-1 text-center" id="modal-size-matrix"></div>
+          </div>
+
+          <!-- IN-MODAL STEPPER -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-slate-800 block">Penyesuaian Cepat Stok:</span>
+              <span class="text-[11px] text-slate-500">Update unit langsung ke Google Sheet</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="adjustCurrentStock(-1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-extrabold text-slate-700">-</button>
+              <span class="text-sm font-extrabold px-2" id="modal-stepper-qty">0</span>
+              <button onclick="adjustCurrentStock(1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-extrabold text-slate-700">+</button>
+              <button onclick="restockCurrent()" class="px-2.5 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-lg text-xs font-bold ml-1">+15 Restock</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="p-5 border-t border-slate-100 flex items-center justify-between bg-slate-50 rounded-b-3xl">
+        <button onclick="deleteCurrentJacket()" class="px-4 py-2 rounded-xl text-rose-600 hover:bg-rose-50 text-xs font-bold transition">
+          <i class="fa-solid fa-trash mr-1.5"></i> Hapus Jaket
+        </button>
+        <button onclick="closeDetailModal()" class="px-5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition">
+          Selesai / Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH JAKET BARU -->
+  <div id="modal-add" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-900">Tambah Jaket ke Inventaris</h3>
+        <button onclick="closeAddModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form id="form-add" onsubmit="submitAddJacket(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Nama Jaket *</label>
+          <input type="text" id="add-name" required placeholder="Contoh: Bomber Classic Flight" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Kode SKU</label>
+            <input type="text" id="add-sku" placeholder="JKT-BMB-001" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Model Gaya</label>
+            <select id="add-style" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <option value="Bomber Jacket">Bomber Jacket</option>
+              <option value="Parka">Parka</option>
+              <option value="Denim Jacket">Denim Jacket</option>
+              <option value="Trench Coat">Trench Coat</option>
+              <option value="Puffer Jacket">Puffer Jacket</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Kategori</label>
+            <select id="add-category" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <option value="Jaket Pria">Jaket Pria</option>
+              <option value="Jaket Wanita">Jaket Wanita</option>
+              <option value="Jaket Anak">Jaket Anak</option>
+              <option value="Jaket Unisex">Jaket Unisex</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Ukuran (XS - 3XL)</label>
+            <select id="add-size" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+              <option value="3XL">3XL</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Jumlah Stok</label>
+            <input type="number" id="add-qty" min="0" value="15" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Bahan Material</label>
+            <input type="text" id="add-material" value="Cotton" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Warna</label>
+            <input type="text" id="add-color" value="Black" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Lokasi Rak</label>
+            <input type="text" id="add-rack" value="Rack A-01" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Harga Unit ($)</label>
+            <input type="number" step="0.01" id="add-price" value="89.99" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+          </div>
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">URL Gambar Produk</label>
+          <input type="url" id="add-image" placeholder="https://..." value="https://mediadirhub.com/vibe/solid-black-jacket-front-with-minimal-branding.png" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <div class="flex items-center space-x-2 pt-1">
+          <input type="checkbox" id="add-seasonal" class="rounded text-blue-600">
+          <label for="add-seasonal" class="font-medium text-slate-700">Koleksi Musiman (Winter / Seasonal)</label>
+        </div>
+        <div class="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+          <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl text-slate-600 font-bold hover:bg-slate-100">Batal</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800">Simpan Jaket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL SCANNER LABEL QR & BARCODE -->
+  <div id="modal-scanner" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 text-white shadow-2xl relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-qrcode"></i>
+          </span>
+          <h3 class="font-bold text-sm text-slate-100" id="modal-scanner-title">Pindai Label QR / Barcode Jaket</h3>
+        </div>
+        <button onclick="closeScannerModal()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Reticle scanner viewfinder animation -->
+      <div class="my-4 relative bg-black/60 rounded-xl h-44 border-2 border-dashed border-blue-500/60 flex flex-col items-center justify-center overflow-hidden">
+        <div class="w-32 h-32 border-2 border-cyan-400 rounded-xl relative flex items-center justify-center">
+          <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#38bdf8] animate-pulse"></div>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-2" id="txt-scanner-guide">Arahkan kamera ke QR Code atau Barcode SKU label jaket</p>
+      </div>
+
+      <!-- Input / Simulasi Manual -->
+      <div class="space-y-3">
+        <label class="text-xs font-semibold text-slate-300 block" id="lbl-scanner-input">Ketik atau Pilih Kode SKU Label:</label>
+        <div class="flex space-x-2">
+          <input type="text" id="scanner-input-sku" placeholder="Contoh: JKT-BMB-BLK-L" class="flex-1 bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button onclick="processScannerCode(document.getElementById('scanner-input-sku').value)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition">Periksa</button>
+        </div>
+
+        <!-- Presets -->
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          <span class="text-[11px] text-slate-400 w-full" id="lbl-scanner-presets">Contoh Cepat:</span>
+          <button onclick="processScannerCode('JKT-BMB-BLK-L')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-blue-300 rounded text-[11px] border border-slate-700">JKT-BMB-BLK-L</button>
+          <button onclick="processScannerCode('JKT-PRK-OLV-XXL')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-blue-300 rounded text-[11px] border border-slate-700">JKT-PRK-OLV-XXL</button>
+          <button onclick="processScannerCode('JKT-NEW-WHT-XL')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded text-[11px] border border-slate-700">JKT-NEW-WHT-XL (+)</button>
+        </div>
+
+        <!-- Scan Result Area -->
+        <div id="scanner-result-box" class="hidden p-3 rounded-xl bg-slate-800 border border-slate-700 text-xs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE CLIENT -->
+  <script>
+    let allJackets = [];
+    let displayedJackets = [];
+    let currentFilterStatus = 'ALL';
+    let currentSort = 'STYLE_ASC';
+    let currentViewMode = 'grid';
+    let activeDetailedJacket = null;
+    let isIndonesian = true;
+
+    // Load data dari Google Apps Script
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+    });
+
+    function loadData() {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(onDataLoaded)
+          .withFailureHandler(onError)
+          .getInventoryData();
+      } else {
+        // Mock data jika dibuka lokal di browser
+        allJackets = [
+          { id: 'j1', sku: 'JKT-BMB-01', name: 'Classic Flight Bomber', genderCategory: 'Jaket Pria', style: 'Bomber Jacket', size: 'L', quantity: 24, minThreshold: 5, material: 'Leather', color: 'Black', locationRack: 'Rack A-01', unitPrice: 99.99, imageUrl: 'https://mediadirhub.com/vibe/black-leather-bomber-jacket-with-ribbed-cuffs-and-zipper-front.png', isSeasonal: false, status: 'IN_STOCK' },
+          { id: 'j2', sku: 'JKT-TRN-02', name: 'Elegance Trench Coat', genderCategory: 'Jaket Wanita', style: 'Trench Coat', size: 'M', quantity: 18, minThreshold: 5, material: 'Cotton', color: 'Beige', locationRack: 'Rack B-02', unitPrice: 129.99, imageUrl: 'https://mediadirhub.com/vibe/beige-cotton-trench-coat-with-double-breasted-buttons-and-belt.png', isSeasonal: false, status: 'IN_STOCK' },
+          { id: 'j3', sku: 'JKT-DNM-03', name: 'Vintage Denim Trucker', genderCategory: 'Jaket Anak', style: 'Denim Jacket', size: 'S', quantity: 3, minThreshold: 5, material: 'Denim', color: 'Blue', locationRack: 'Rack C-01', unitPrice: 79.99, imageUrl: 'https://mediadirhub.com/vibe/medium-blue-denim-jacket-with-patch-pockets-and-button-front.png', isSeasonal: false, status: 'LOW_STOCK' },
+          { id: 'j4', sku: 'JKT-PFR-04', name: 'Alpine Quilted Puffer', genderCategory: 'Jaket Unisex', style: 'Puffer Jacket', size: 'XL', quantity: 14, minThreshold: 5, material: 'Polyester', color: 'Gray', locationRack: 'Rack D-03', unitPrice: 119.99, imageUrl: 'https://mediadirhub.com/vibe/dark-gray-quilted-puffer-jacket-with-hood-and-zip-closure.png', isSeasonal: true, status: 'IN_STOCK' },
+          { id: 'j5', sku: 'JKT-PRK-05', name: 'Sub-Zero Storm Parka', genderCategory: 'Jaket Pria', style: 'Parka', size: 'XXL', quantity: 2, minThreshold: 5, material: 'Nylon', color: 'Olive', locationRack: 'Rack E-01', unitPrice: 149.99, imageUrl: 'https://mediadirhub.com/vibe/olive-green-jacket-with-matte-finish-and-structured-silhouette.png', isSeasonal: true, status: 'LOW_STOCK' },
+          { id: 'j6', sku: 'JKT-BMB-06', name: 'Urban Pilot Bomber Extra', genderCategory: 'Jaket Unisex', style: 'Bomber Jacket', size: '3XL', quantity: 0, minThreshold: 5, material: 'Nylon', color: 'Navy', locationRack: 'Rack A-04', unitPrice: 109.99, imageUrl: 'https://mediadirhub.com/vibe/deep-navy-blue-jacket-with-clean-lines-and-no-patterns.png', isSeasonal: false, status: 'OUT_OF_STOCK' }
+        ];
+        onDataLoaded({ success: true, jackets: allJackets });
+      }
+    }
+
+    function onDataLoaded(res) {
+      if (res && res.jackets) {
+        allJackets = res.jackets;
+        updateSummaryMetrics();
+        applyFilterAndRender();
+        renderRechartsDashboard();
+      }
+    }
+
+    function onError(err) {
+      alert('Error Google Script: ' + err);
+    }
+
+    function updateSummaryMetrics() {
+      const totalStock = allJackets.reduce((sum, item) => sum + (parseInt(item.quantity) || 0), 0);
+      const uniqueSkus = new Set(allJackets.map(item => item.sku || item.id)).size;
+      const inStock = allJackets.filter(i => i.status === 'IN_STOCK').length;
+      const lowOrOut = allJackets.filter(i => i.status === 'LOW_STOCK' || i.status === 'OUT_OF_STOCK').length;
+
+      document.getElementById('stat-total-stock').innerText = totalStock.toLocaleString();
+      document.getElementById('stat-unique-variants').innerText = uniqueSkus;
+      document.getElementById('stat-in-stock').innerText = inStock;
+      document.getElementById('stat-low-stock').innerText = lowOrOut;
+    }
+
+    function applyFilterAndRender() {
+      const query = (document.getElementById('input-search').value || '').trim().toLowerCase();
+      let filtered = [...allJackets];
+
+      // Status Filter
+      if (currentFilterStatus !== 'ALL') {
+        filtered = filtered.filter(item => item.status === currentFilterStatus);
+      }
+
+      // Search Query (Filter by Name or Style)
+      if (query) {
+        const tokens = query.split(/\\s+/);
+        filtered = filtered.filter(item => {
+          return tokens.every(token => 
+            (item.name || '').toLowerCase().includes(token) ||
+            (item.style || '').toLowerCase().includes(token) ||
+            (item.sku || '').toLowerCase().includes(token) ||
+            (item.genderCategory || '').toLowerCase().includes(token) ||
+            (item.material || '').toLowerCase().includes(token) ||
+            (item.color || '').toLowerCase().includes(token)
+          );
+        });
+
+        document.getElementById('search-indicator').classList.remove('hidden');
+        document.getElementById('search-indicator-text').innerText = 
+          isIndonesian ? `Menampilkan ${filtered.length} jaket untuk: "${query}"` : `Showing ${filtered.length} jackets for: "${query}"`;
+        document.getElementById('btn-clear-search').classList.remove('hidden');
+      } else {
+        document.getElementById('search-indicator').classList.add('hidden');
+        document.getElementById('btn-clear-search').classList.add('hidden');
+      }
+
+      // Sort
+      const sortVal = document.getElementById('select-sort').value;
+      if (sortVal === 'STYLE_ASC') {
+        filtered.sort((a, b) => (a.style || '').localeCompare(b.style || '') || (a.name || '').localeCompare(b.name || ''));
+      } else if (sortVal === 'NAME_ASC') {
+        filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      } else if (sortVal === 'QTY_DESC') {
+        filtered.sort((a, b) => b.quantity - a.quantity);
+      } else if (sortVal === 'QTY_ASC') {
+        filtered.sort((a, b) => a.quantity - b.quantity);
+      }
+
+      displayedJackets = filtered;
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      const listBody = document.getElementById('catalog-list-body');
+      const emptyState = document.getElementById('empty-state');
+
+      if (displayedJackets.length === 0) {
+        grid.innerHTML = '';
+        listBody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      // Render Grid
+      grid.innerHTML = displayedJackets.map(item => {
+        const badge = getStatusBadge(item.status);
+        return `
+          <div onclick="openDetailModal('${item.id}')" class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col group">
+            <div class="relative h-44 bg-slate-100 overflow-hidden">
+              <img src="${item.imageUrl || 'https://mediadirhub.com/vibe/solid-black-jacket-front-with-minimal-branding.png'}" 
+                   alt="${item.name}" 
+                   class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold shadow-sm ${badge.class}">
+                ${badge.text}
+              </span>
+              <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900/80 text-white">
+                ${item.locationRack}
+              </span>
+            </div>
+            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+              <div>
+                <div class="flex items-center justify-between text-[11px] mb-1">
+                  <span class="font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">${item.sku}</span>
+                  <span class="font-extrabold bg-slate-900 text-white px-1.5 py-0.5 rounded">${item.size}</span>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm line-clamp-1 group-hover:text-blue-600 transition">${item.name}</h4>
+                <p class="text-xs text-slate-500">${item.genderCategory} • ${item.style}</p>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100">
+                <div class="flex items-center justify-between bg-slate-50 p-2 rounded-xl mb-2">
+                  <span class="text-[11px] text-slate-500 font-medium">Stok Saat Ini:</span>
+                  <span class="text-xs font-extrabold ${badge.textClass}">${item.quantity > 0 ? item.quantity + ' Unit' : 'Habis'}</span>
+                </div>
+
+                <div class="flex items-center justify-between" onclick="event.stopPropagation()">
+                  <div class="flex items-center space-x-1.5 bg-slate-100 rounded-lg p-1">
+                    <button onclick="handleQuickAdjust('${item.id}', -1)" class="w-6 h-6 rounded bg-white text-slate-700 font-bold hover:bg-slate-200 text-xs shadow-sm">-</button>
+                    <span class="text-xs font-bold px-1.5">${item.quantity}</span>
+                    <button onclick="handleQuickAdjust('${item.id}', 1)" class="w-6 h-6 rounded bg-white text-slate-700 font-bold hover:bg-slate-200 text-xs shadow-sm">+</button>
+                  </div>
+                  ${item.status !== 'IN_STOCK' ? `
+                    <button onclick="handleQuickRestock('${item.id}')" class="px-2 py-1 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[10px] font-bold">
+                      +15 Restock
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render List / Table
+      listBody.innerHTML = displayedJackets.map(item => {
+        const badge = getStatusBadge(item.status);
+        return `
+          <tr onclick="openDetailModal('${item.id}')" class="hover:bg-slate-50 transition cursor-pointer">
+            <td class="p-3.5 flex items-center space-x-3">
+              <img src="${item.imageUrl}" class="w-10 h-10 rounded-lg object-cover bg-slate-100 border">
+              <div>
+                <strong class="font-bold text-slate-900 block">${item.name}</strong>
+                <span class="text-slate-400 text-[11px]">${item.color} • ${item.material}</span>
+              </div>
+            </td>
+            <td class="p-3.5 font-bold text-slate-600">${item.sku}</td>
+            <td class="p-3.5">${item.genderCategory} <br><span class="text-slate-400">${item.style}</span></td>
+            <td class="p-3.5"><span class="bg-slate-900 text-white font-extrabold px-2 py-0.5 rounded text-[11px]">${item.size}</span></td>
+            <td class="p-3.5 font-extrabold text-sm">${item.quantity} Unit</td>
+            <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${badge.class}">${badge.text}</span></td>
+            <td class="p-3.5 text-right" onclick="event.stopPropagation()">
+              <button onclick="handleQuickAdjust('${item.id}', -1)" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded font-bold">-</button>
+              <button onclick="handleQuickAdjust('${item.id}', 1)" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded font-bold ml-1">+</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function getStatusBadge(status) {
+      if (status === 'IN_STOCK') return { text: 'Tersedia', class: 'badge-in', textClass: 'text-emerald-700' };
+      if (status === 'LOW_STOCK') return { text: 'Stok Menipis', class: 'badge-low', textClass: 'text-amber-700' };
+      return { text: 'Habis', class: 'badge-out', textClass: 'text-rose-700' };
+    }
+
+    function handleSearch() {
+      applyFilterAndRender();
+    }
+
+    function setQuickSearch(style) {
+      document.getElementById('input-search').value = style;
+      applyFilterAndRender();
+    }
+
+    function clearSearch() {
+      document.getElementById('input-search').value = '';
+      applyFilterAndRender();
+    }
+
+    function setStatusFilter(status) {
+      currentFilterStatus = status;
+      ['all', 'in', 'low', 'out'].forEach(s => {
+        const btn = document.getElementById('btn-status-' + s);
+        if (btn) btn.className = 'px-3 py-1.5 rounded-lg font-medium bg-slate-100 text-slate-700 hover:bg-slate-200';
+      });
+      const activeBtn = document.getElementById('btn-status-' + (status === 'ALL' ? 'all' : status === 'IN_STOCK' ? 'in' : status === 'LOW_STOCK' ? 'low' : 'out'));
+      if (activeBtn) activeBtn.className = 'px-3 py-1.5 rounded-lg font-semibold bg-slate-900 text-white shadow-sm';
+      applyFilterAndRender();
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      if (mode === 'grid') {
+        document.getElementById('catalog-grid').classList.remove('hidden');
+        document.getElementById('catalog-list').classList.add('hidden');
+        document.getElementById('btn-view-grid').className = 'px-2.5 py-1 rounded-md text-xs font-bold bg-white text-slate-900 shadow-sm';
+        document.getElementById('btn-view-list').className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900';
+      } else {
+        document.getElementById('catalog-grid').classList.add('hidden');
+        document.getElementById('catalog-list').classList.remove('hidden');
+        document.getElementById('btn-view-grid').className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900';
+        document.getElementById('btn-view-list').className = 'px-2.5 py-1 rounded-md text-xs font-bold bg-white text-slate-900 shadow-sm';
+      }
+    }
+
+    function handleSort() {
+      applyFilterAndRender();
+    }
+
+    function clearAllFilters() {
+      document.getElementById('input-search').value = '';
+      setStatusFilter('ALL');
+    }
+
+    // Modal Details
+    function openDetailModal(id) {
+      const item = allJackets.find(j => j.id === id);
+      if (!item) return;
+      activeDetailedJacket = item;
+
+      document.getElementById('modal-sku').innerText = item.sku;
+      document.getElementById('modal-title').innerText = item.name;
+      document.getElementById('modal-img').src = item.imageUrl;
+      document.getElementById('modal-price').innerText = '$' + (item.unitPrice || 89.99).toFixed(2);
+      document.getElementById('modal-material').innerText = item.material;
+      document.getElementById('modal-color').innerText = item.color;
+      document.getElementById('modal-rack').innerText = item.locationRack;
+      document.getElementById('modal-rack-box').innerText = item.locationRack;
+      document.getElementById('modal-qty').innerText = item.quantity;
+      document.getElementById('modal-stepper-qty').innerText = item.quantity;
+      document.getElementById('modal-threshold').innerText = item.minThreshold;
+      document.getElementById('modal-active-color').innerText = 'Warna Aktif: ' + item.color;
+
+      const badge = getStatusBadge(item.status);
+      document.getElementById('modal-status-badge').innerHTML = `<span class="px-2.5 py-1 rounded-md text-xs font-bold shadow-sm ${badge.class}">${badge.text}</span>`;
+      document.getElementById('modal-stock-status-pill').innerText = badge.text;
+      document.getElementById('modal-stock-status-pill').className = `text-xs px-2 py-0.5 rounded font-bold ${badge.class}`;
+
+      // Contextual Description
+      document.getElementById('modal-desc').innerText = 
+        `Jaket model ${item.style} berkualitas tinggi untuk ${item.genderCategory}. Dibuat dengan material ${item.material} berdaya tahan optimal dengan sentuhan warna ${item.color}. Disimpan secara rapi pada ${item.locationRack} siap untuk pemenuhan pesanan.`;
+
+      // Size Matrix XS - 3XL
+      const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+      const sameStyleJackets = allJackets.filter(j => j.style === item.style);
+      document.getElementById('modal-size-matrix').innerHTML = sizes.map(s => {
+        const isCurrent = s === item.size;
+        const count = sameStyleJackets.filter(j => j.size === s).reduce((sum, j) => sum + j.quantity, 0);
+        return `
+          <div class="p-1.5 rounded-lg border ${isCurrent ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200'}">
+            <span class="block text-[10px] font-bold">${s}</span>
+            <span class="block text-xs font-extrabold ${isCurrent ? 'text-emerald-400' : ''}">${count}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Color Swatches
+      const colors = [
+        { name: 'Black', hex: '#18181B' },
+        { name: 'Navy', hex: '#1E3A8A' },
+        { name: 'Olive', hex: '#365314' },
+        { name: 'Beige', hex: '#E5D5C5' },
+        { name: 'Gray', hex: '#6B7280' },
+        { name: 'Maroon', hex: '#800020' }
+      ];
+      document.getElementById('modal-color-swatches').innerHTML = colors.map(c => {
+        const isSelected = c.name.toLowerCase() === item.color.toLowerCase();
+        return `
+          <button onclick="switchColorVariant('${c.name}')" class="flex flex-col items-center space-y-1 group">
+            <span class="w-8 h-8 rounded-full border-2 ${isSelected ? 'border-blue-600 scale-110' : 'border-slate-300'} flex items-center justify-center shadow-sm" style="background-color: ${c.hex}">
+              ${isSelected ? '<i class="fa-solid fa-check text-xs text-white"></i>' : ''}
+            </span>
+            <span class="text-[10px] font-bold text-slate-600 group-hover:text-slate-900">${c.name}</span>
+          </button>
+        `;
+      }).join('');
+
+      document.getElementById('modal-detail').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('modal-detail').classList.add('hidden');
+    }
+
+    function switchColorVariant(colorName) {
+      if (!activeDetailedJacket) return;
+      const matched = allJackets.find(j => j.style === activeDetailedJacket.style && j.color.toLowerCase() === colorName.toLowerCase());
+      if (matched) {
+        openDetailModal(matched.id);
+      } else {
+        activeDetailedJacket.color = colorName;
+        document.getElementById('modal-color').innerText = colorName;
+        document.getElementById('modal-active-color').innerText = 'Warna Aktif: ' + colorName;
+      }
+    }
+
+    function handleQuickAdjust(id, delta) {
+      const item = allJackets.find(j => j.id === id);
+      if (!item) return;
+      item.quantity = Math.max(0, item.quantity + delta);
+      if (item.quantity <= 0) item.status = 'OUT_OF_STOCK';
+      else if (item.quantity <= item.minThreshold) item.status = 'LOW_STOCK';
+      else item.status = 'IN_STOCK';
+
+      updateSummaryMetrics();
+      applyFilterAndRender();
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run.adjustStock(id, delta);
+      }
+    }
+
+    function handleQuickRestock(id) {
+      handleQuickAdjust(id, 15);
+    }
+
+    function adjustCurrentStock(delta) {
+      if (!activeDetailedJacket) return;
+      handleQuickAdjust(activeDetailedJacket.id, delta);
+      openDetailModal(activeDetailedJacket.id);
+    }
+
+    function restockCurrent() {
+      if (!activeDetailedJacket) return;
+      handleQuickAdjust(activeDetailedJacket.id, 15);
+      openDetailModal(activeDetailedJacket.id);
+    }
+
+    function deleteCurrentJacket() {
+      if (!activeDetailedJacket) return;
+      if (!confirm('Apakah Anda yakin ingin menghapus jaket "' + activeDetailedJacket.name + '"?')) return;
+      const id = activeDetailedJacket.id;
+      allJackets = allJackets.filter(j => j.id !== id);
+      closeDetailModal();
+      updateSummaryMetrics();
+      applyFilterAndRender();
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run.deleteJacket(id);
+      }
+    }
+
+    function openImagePickerForCurrent() {
+      if (!activeDetailedJacket) return;
+      const newUrl = prompt('Masukkan URL gambar baru untuk jaket ini:', activeDetailedJacket.imageUrl);
+      if (newUrl && newUrl.trim()) {
+        activeDetailedJacket.imageUrl = newUrl.trim();
+        document.getElementById('modal-img').src = newUrl.trim();
+        applyFilterAndRender();
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run.updateJacketImage(activeDetailedJacket.id, newUrl.trim(), false);
+        }
+      }
+    }
+
+    // Modal Scanner
+    function openScannerModal() {
+      document.getElementById('modal-scanner').classList.remove('hidden');
+      document.getElementById('scanner-result-box').classList.add('hidden');
+      document.getElementById('scanner-input-sku').value = '';
+    }
+    function closeScannerModal() {
+      document.getElementById('modal-scanner').classList.add('hidden');
+    }
+
+    function processScannerCode(rawCode) {
+      if (!rawCode || !rawCode.trim()) return;
+      const clean = rawCode.trim();
+      const resultBox = document.getElementById('scanner-result-box');
+      resultBox.classList.remove('hidden');
+
+      const found = allJackets.find(j => 
+        (j.sku && j.sku.toLowerCase() === clean.toLowerCase()) || 
+        (j.id && j.id.toLowerCase() === clean.toLowerCase())
+      );
+
+      if (found) {
+        resultBox.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2 text-emerald-400 font-bold">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>` + (isIndonesian ? 'Jaket Teridentifikasi!' : 'Jacket Identified!') + `</span>
+            </div>
+            <div class="flex items-center space-x-3 bg-slate-900/80 p-2.5 rounded-xl border border-slate-700">
+              <img src="` + (found.imageUrl || 'https://mediadirhub.com/vibe/solid-black-jacket-front-with-minimal-branding.png') + `" class="w-12 h-12 rounded-lg object-cover">
+              <div>
+                <p class="font-bold text-white">` + found.name + `</p>
+                <p class="text-slate-400 text-[11px]">` + found.sku + ` • ` + found.style + ` (` + found.size + `)</p>
+                <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ` + (found.status === 'IN_STOCK' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800') + `">Stok: ` + found.quantity + ` unit</span>
+              </div>
+            </div>
+            <button onclick="closeScannerModal(); openDetailModal('` + found.id + `')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition">
+              <i class="fa-solid fa-eye mr-1"></i> ` + (isIndonesian ? 'Buka Detail Produk' : 'View Product Details') + `
+            </button>
+          </div>
+        `;
+      } else {
+        resultBox.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center space-x-2 text-amber-400 font-bold">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>` + (isIndonesian ? 'Label Baru Terdeteksi' : 'New Label Detected') + `</span>
+            </div>
+            <p class="text-slate-300">Kode SKU: <strong class="text-amber-300">` + clean + `</strong> belum terdaftar dalam inventaris gudang.</p>
+            <button onclick="closeScannerModal(); prefillAddModalFromScanner('` + clean + `')" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition">
+              <i class="fa-solid fa-plus mr-1"></i> ` + (isIndonesian ? '+ Tambah Jaket dengan SKU Ini' : '+ Add Jacket with this SKU') + `
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function prefillAddModalFromScanner(skuCode) {
+      openAddModal();
+      document.getElementById('add-sku').value = skuCode;
+      const parts = skuCode.split('-');
+      if (parts.length >= 3) {
+        const prefix = parts[1].toUpperCase();
+        if (prefix === 'BMB') document.getElementById('add-style').value = 'Bomber Jacket';
+        else if (prefix === 'PRK') document.getElementById('add-style').value = 'Parka';
+        else if (prefix === 'DNM') document.getElementById('add-style').value = 'Denim Jacket';
+        else if (prefix === 'TRN') document.getElementById('add-style').value = 'Trench Coat';
+        else if (prefix === 'PUF') document.getElementById('add-style').value = 'Puffer Jacket';
+        
+        const lastPart = parts[parts.length - 1].toUpperCase();
+        if (['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'].indexOf(lastPart) !== -1) {
+          document.getElementById('add-size').value = lastPart;
+        }
+      }
+    }
+
+    // Modal Tambah
+    function openAddModal() {
+      document.getElementById('modal-add').classList.remove('hidden');
+    }
+    function closeAddModal() {
+      document.getElementById('modal-add').classList.add('hidden');
+    }
+
+    function submitAddJacket(e) {
+      e.preventDefault();
+      const newJacket = {
+        name: document.getElementById('add-name').value,
+        sku: document.getElementById('add-sku').value,
+        style: document.getElementById('add-style').value,
+        genderCategory: document.getElementById('add-category').value,
+        size: document.getElementById('add-size').value,
+        quantity: parseInt(document.getElementById('add-qty').value) || 0,
+        minThreshold: 5,
+        material: document.getElementById('add-material').value,
+        color: document.getElementById('add-color').value,
+        locationRack: document.getElementById('add-rack').value,
+        unitPrice: parseFloat(document.getElementById('add-price').value) || 89.99,
+        imageUrl: document.getElementById('add-image').value,
+        isSeasonal: document.getElementById('add-seasonal').checked
+      };
+
+      closeAddModal();
+      document.getElementById('form-add').reset();
+
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(res => {
+            loadData();
+          })
+          .addJacket(newJacket);
+      } else {
+        newJacket.id = 'j_' + Date.now();
+        newJacket.status = newJacket.quantity > 5 ? 'IN_STOCK' : newJacket.quantity > 0 ? 'LOW_STOCK' : 'OUT_OF_STOCK';
+        allJackets.unshift(newJacket);
+        updateSummaryMetrics();
+        applyFilterAndRender();
+      }
+    }
+
+    function exportCsv() {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(csvContent => {
+            downloadCsvFile(csvContent);
+          })
+          .exportInventoryCsv();
+      } else {
+        let csv = 'ID,SKU,Nama Jaket,Kategori,Model,Ukuran,Stok,Bahan,Warna,Lokasi Rak,Harga\r\n';
+        allJackets.forEach(j => {
+          csv += `"${j.id}","${j.sku}","${j.name}","${j.genderCategory}","${j.style}","${j.size}",${j.quantity},"${j.material}","${j.color}","${j.locationRack}",${j.unitPrice}\r\n`;
+        });
+        downloadCsvFile(csv);
+      }
+    }
+
+    function downloadCsvFile(content) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'Inventaris_Jaket_' + new Date().toISOString().slice(0, 10) + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    let rechartsMode = 'STYLE'; // 'STYLE', 'SIZE', 'CATEGORY'
+
+    function setRechartsMode(mode) {
+      rechartsMode = mode;
+      ['style', 'size', 'category'].forEach(m => {
+        const btn = document.getElementById('tab-recharts-' + m);
+        if (btn) {
+          if (m === mode.toLowerCase()) {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-900 font-bold transition';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+          }
+        }
+      });
+      renderRechartsDashboard();
+    }
+
+    function renderRechartsDashboard() {
+      const container = document.getElementById('recharts-root');
+      if (!container) return;
+
+      let chartData = [];
+      if (rechartsMode === 'STYLE') {
+        const styles = ['Bomber Jacket', 'Parka', 'Denim Jacket', 'Trench Coat', 'Puffer Jacket'];
+        const colors = ['#2563EB', '#0D9488', '#6366F1', '#EA580C', '#8B5CF6'];
+        chartData = styles.map((st, i) => {
+          const total = allJackets.filter(j => (j.style || '').toLowerCase() === st.toLowerCase())
+            .reduce((sum, j) => sum + (parseInt(j.quantity) || 0), 0);
+          return { name: st.replace(' Jacket', '').replace(' Coat', ''), fullName: st, stock: total, color: colors[i % colors.length] };
+        });
+      } else if (rechartsMode === 'SIZE') {
+        const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+        const colors = ['#38BDF8', '#0284C7', '#2563EB', '#1D4ED8', '#4F46E5', '#7C3AED', '#9333EA'];
+        chartData = sizes.map((sz, i) => {
+          const total = allJackets.filter(j => (j.size || '').toUpperCase() === sz)
+            .reduce((sum, j) => sum + (parseInt(j.quantity) || 0), 0);
+          return { name: sz, fullName: 'Ukuran ' + sz, stock: total, color: colors[i % colors.length] };
+        });
+      } else {
+        const categories = ['Jaket Pria', 'Jaket Wanita', 'Jaket Anak', 'Jaket Unisex'];
+        const colors = ['#1E40AF', '#BE185D', '#047857', '#7C2D12'];
+        chartData = categories.map((cat, i) => {
+          const total = allJackets.filter(j => (j.genderCategory || '').toLowerCase() === cat.toLowerCase())
+            .reduce((sum, j) => sum + (parseInt(j.quantity) || 0), 0);
+          return { name: cat.replace('Jaket ', ''), fullName: cat, stock: total, color: colors[i % colors.length] };
+        });
+      }
+
+      // Render via Recharts React library if available
+      if (window.Recharts && window.React && window.ReactDOM) {
+        try {
+          const { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell } = window.Recharts;
+          const e = React.createElement;
+
+          const CustomTooltip = ({ active, payload }) => {
+            if (active && payload && payload.length) {
+              const data = payload[0].payload;
+              return e('div', { className: 'bg-slate-900 text-white text-xs rounded-xl p-3 shadow-xl border border-slate-700' },
+                e('p', { className: 'font-bold text-slate-200' }, data.fullName || data.name),
+                e('p', { className: 'text-emerald-400 font-extrabold text-sm mt-0.5' }, data.stock + ' unit stok'),
+                e('p', { className: 'text-slate-400 text-[11px] mt-0.5' }, isIndonesian ? 'Tersedia di gudang' : 'In warehouse inventory')
+              );
+            }
+            return null;
+          };
+
+          const chartElement = e(ResponsiveContainer, { width: '100%', height: 260 },
+            e(BarChart, { data: chartData, margin: { top: 20, right: 20, left: -10, bottom: 5 } },
+              e(CartesianGrid, { strokeDasharray: '3 3', vertical: false, stroke: '#E2E8F0' }),
+              e(XAxis, { dataKey: 'name', tick: { fontSize: 12, fill: '#64748B' }, tickLine: false, axisLine: { stroke: '#CBD5E1' } }),
+              e(YAxis, { tick: { fontSize: 11, fill: '#64748B' }, tickLine: false, axisLine: false }),
+              e(Tooltip, { content: e(CustomTooltip) }),
+              e(Bar, { dataKey: 'stock', radius: [8, 8, 0, 0], animationDuration: 800 },
+                chartData.map((entry, index) => e(Cell, { key: 'cell-' + index, fill: entry.color }))
+              )
+            )
+          );
+
+          if (!window.__rechartsRoot) {
+            window.__rechartsRoot = ReactDOM.createRoot(container);
+          }
+          window.__rechartsRoot.render(chartElement);
+          return;
+        } catch (err) {
+          console.warn('Recharts render fallback:', err);
+        }
+      }
+
+      // Responsive HTML/CSS Bar Chart Fallback
+      const maxVal = Math.max(...chartData.map(d => d.stock), 1);
+      let html = '<div class="flex items-end justify-around h-56 pt-8 pb-4 px-2 bg-slate-50 rounded-xl border border-slate-100 gap-2">';
+      chartData.forEach(d => {
+        const heightPercent = Math.max(Math.round((d.stock / maxVal) * 100), 8);
+        html += `
+          <div class="flex-1 flex flex-col items-center h-full justify-end group">
+            <span class="text-xs font-bold text-slate-700 mb-1">${d.stock}</span>
+            <div class="w-full max-w-[48px] rounded-t-lg transition-all duration-500 hover:brightness-110 shadow-sm"
+              style="height: ${heightPercent}%; background-color: ${d.color};"></div>
+            <span class="text-[11px] font-semibold text-slate-600 mt-2 text-center truncate w-full">${d.name}</span>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function toggleLanguage() {
+      isIndonesian = !isIndonesian;
+      document.getElementById('btn-lang-text').innerText = isIndonesian ? 'ID / EN' : 'EN / ID';
+      document.getElementById('txt-app-title').innerText = isIndonesian ? 'Gudang Inventaris Jaket' : 'Jacket Warehouse Inventory';
+      document.getElementById('txt-app-subtitle').innerText = isIndonesian ? 'Sistem Manajemen & Kontrol Stok Terpadu' : 'Unified Stock Control & Inventory System';
+      document.getElementById('btn-export-text').innerText = isIndonesian ? 'Ekspor CSV' : 'Export CSV';
+      document.getElementById('btn-add-text').innerText = isIndonesian ? 'Tambah Jaket' : 'Add Jacket';
+      const scanBtn = document.getElementById('btn-scan-text');
+      if (scanBtn) scanBtn.innerText = isIndonesian ? 'Scan Label QR' : 'Scan QR Label';
+      const scanTitle = document.getElementById('modal-scanner-title');
+      if (scanTitle) scanTitle.innerText = isIndonesian ? 'Pindai Label QR / Barcode Jaket' : 'Scan Jacket QR / Barcode Label';
+      const scanGuide = document.getElementById('txt-scanner-guide');
+      if (scanGuide) scanGuide.innerText = isIndonesian ? 'Arahkan kamera ke QR Code atau Barcode SKU label jaket' : 'Align camera with jacket label QR code or SKU barcode';
+      const scanInput = document.getElementById('lbl-scanner-input');
+      if (scanInput) scanInput.innerText = isIndonesian ? 'Ketik atau Pilih Kode SKU Label:' : 'Type or Select Label SKU Code:';
+      document.getElementById('recharts-title').innerText = isIndonesian ? 'Dashboard Distribusi Stok Jaket (Recharts)' : 'Jacket Stock Distribution Dashboard (Recharts)';
+      document.getElementById('recharts-subtitle').innerText = isIndonesian ? 'Visualisasi diagram batang stok per model gaya, ukuran, dan kategori' : 'Bar chart visualization of stock across styles, sizes, and categories';
+      document.getElementById('tab-recharts-style').innerText = isIndonesian ? 'Model Gaya' : 'Styles';
+      document.getElementById('tab-recharts-size').innerText = isIndonesian ? 'Ukuran' : 'Sizes';
+      document.getElementById('tab-recharts-category').innerText = isIndonesian ? 'Kategori' : 'Category';
+      applyFilterAndRender();
+      renderRechartsDashboard();
+    }
+  </script>
+
+</body>
+</html>
